@@ -1,0 +1,96 @@
+#include <iostream>
+#include <iomanip>  // untuk setw() biar rapi
+#include <string>
+using namespace std;
+
+const int NUM_STUDENTS = 20;
+
+struct studentType {
+    string studentFName;
+    string studentLName;
+    int testScore;
+    char grade;
+};
+
+// a. Fungsi untuk membaca data mahasiswa
+void readData(studentType students[], int num) {
+    cout << "Masukkan nama depan, nama belakang, dan nilai ujian untuk "
+         << num << " siswa:\n";
+    for (int i = 0; i < num; i++) {
+        cout << "Siswa ke-" << i + 1 << ": ";
+        cin >> students[i].studentFName >> students[i].studentLName >> students[i].testScore;
+    }
+}
+
+// b. Fungsi untuk menentukan grade
+void assignGrade(studentType students[], int num) {
+    for (int i = 0; i < num; i++) {
+        int score = students[i].testScore;
+        if (score >= 90)
+            students[i].grade = 'A';
+        else if (score >= 80)
+            students[i].grade = 'B';
+        else if (score >= 70)
+            students[i].grade = 'C';
+        else if (score >= 60)
+            students[i].grade = 'D';
+        else
+            students[i].grade = 'F';
+    }
+}
+
+// c. Fungsi untuk mencari nilai tertinggi
+int findHighestScore(studentType students[], int num) {
+    int highest = students[0].testScore;
+    for (int i = 1; i < num; i++) {
+        if (students[i].testScore > highest)
+            highest = students[i].testScore;
+    }
+    return highest;
+}
+
+// d. Fungsi untuk menampilkan nama siswa dengan nilai tertinggi
+void printHighestStudents(studentType students[], int num, int highest) {
+    cout << "\nSiswa dengan nilai tertinggi (" << highest << "):\n";
+    for (int i = 0; i < num; i++) {
+        if (students[i].testScore == highest) {
+            cout << students[i].studentLName << ", " << students[i].studentFName
+                 << "  " << students[i].testScore << "  "
+                 << students[i].grade << endl;
+        }
+    }
+}
+
+// Fungsi untuk menampilkan semua data siswa
+void printAllStudents(studentType students[], int num) {
+    cout << left << setw(15) << "Last Name"
+         << setw(15) << "First Name"
+         << setw(10) << "Score"
+         << "Grade\n";
+    cout << "-----------------------------------------\n";
+    for (int i = 0; i < num; i++) {
+        cout << left << setw(15) << students[i].studentLName
+             << setw(15) << students[i].studentFName
+             << setw(10) << students[i].testScore
+             << students[i].grade << endl;
+    }
+}
+
+int main() {
+    studentType students[NUM_STUDENTS];
+    int numStudents;
+
+    cout << "Masukkan jumlah siswa (maks 20): ";
+    cin >> numStudents;
+
+    readData(students, numStudents);
+    assignGrade(students, numStudents);
+
+    cout << "\nDaftar Nilai Siswa:\n";
+    printAllStudents(students, numStudents);
+
+    int highest = findHighestScore(students, numStudents);
+    printHighestStudents(students, numStudents, highest);
+
+    return 0;
+}
